@@ -7,6 +7,7 @@ export class WorkerWebSocketComponent {
 
     @SubscribeMessage('worker-list')
     onEvent(client, data): WsResponse<any> {
+
         return {event: 'worker-list', data: 'hi'};
     }
 }

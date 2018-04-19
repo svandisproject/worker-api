@@ -1,7 +1,7 @@
-import {BadRequestException, Component} from "@nestjs/common";
+import {Component} from "@nestjs/common";
 import {WorkerResource} from "../resources/WorkerResource";
 import {Observable} from "rxjs/Observable";
-import {ScheduledWorker} from "../resources/dataModel/ScheduledWorker";
+import {WorkerTask} from "../resources/dataModel/WorkerTask";
 import "rxjs/add/operator/map";
 import 'rxjs/add/operator/catch';
 
@@ -10,7 +10,7 @@ export class WorkerService {
     constructor(private workerResource: WorkerResource) {
     }
 
-    getScheduledWorkers(): Observable<ScheduledWorker[]> {
+    getTaskList(): Observable<WorkerTask[]> {
         return this.workerResource.schedule()
             .map((response) => response.data);
     }

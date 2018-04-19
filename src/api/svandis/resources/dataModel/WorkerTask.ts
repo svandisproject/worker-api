@@ -1,4 +1,4 @@
-export interface ScheduledWorker {
+export interface WorkerTask {
     type: string;
     config: {
         url: string,
@@ -6,6 +6,6 @@ export interface ScheduledWorker {
         contentSelector: string,
         publishedAtSelector: string,
         dateFormat: string,
-    },
-    time_interval: number
+    };
+    time_interval: number;
 }
