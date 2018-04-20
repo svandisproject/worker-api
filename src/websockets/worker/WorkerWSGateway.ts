@@ -7,7 +7,7 @@ import {Subscription} from "rxjs/Subscription";
 export class WorkerWSGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
     @WebSocketServer() private server: Server;
-    private clientSubscriptionMap: Map<string, Subscription>;
+    private clientSubscriptionMap: Map<string, Subscription> = new Map<string, Subscription>();
 
     constructor(private taskConfigService: TaskConfigurationService) {
     }
