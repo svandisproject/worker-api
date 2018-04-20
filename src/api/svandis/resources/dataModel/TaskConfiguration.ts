@@ -1,4 +1,4 @@
-export interface WorkerTask {
+export interface TaskConfiguration {
     type: string;
     config: {
         url: string,

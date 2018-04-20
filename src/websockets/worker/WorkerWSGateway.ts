@@ -1,8 +1,9 @@
 import {SubscribeMessage, WebSocketGateway, WsResponse} from "@nestjs/websockets";
+import {WorkerResource} from "../../api/svandis/resources/WorkerResource";
 
 @WebSocketGateway(3333)
-export class WorkerWebSocketComponent {
-    constructor() {
+export class WorkerWSGateway {
+    constructor(res: WorkerResource) {
     }
 
     @SubscribeMessage('worker-list')

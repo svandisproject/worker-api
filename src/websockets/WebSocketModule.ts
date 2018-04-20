@@ -1,12 +1,11 @@
 import {Module} from "@nestjs/common";
-import {WorkerModule} from "./worker/WorkerModule";
-import {ApiModule} from "../api/ApiModule";
+import {WorkerWSModule} from "./worker/WorkerWSModule";
 
 @Module({
     imports: [
-        ApiModule,
-        WorkerModule
+        WorkerWSModule
     ]
 })
 export class WebSocketModule {
+
 }

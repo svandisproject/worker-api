@@ -9,9 +9,10 @@ import {WorkerService} from "./services/WorkerService";
     ],
     components: [
         WorkerResource,
-        WorkerService
+        WorkerService,
     ],
     exports: [
+        WorkerResource,
         WorkerService
     ]
 })

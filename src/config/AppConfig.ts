@@ -1,3 +1,3 @@
 export const AppConfig = {
-    APP_PORT: 3000
+    APP_PORT: 3030
 };
