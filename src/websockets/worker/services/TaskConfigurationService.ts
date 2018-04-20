@@ -7,6 +7,8 @@ import Timer = NodeJS.Timer;
 
 @Component()
 export class TaskConfigurationService {
+    public static readonly CONFIG_UPDATE_EVENT: string = 'task-config-update';
+
     private configurationSubject: Subject<TaskConfiguration> = new Subject<TaskConfiguration>();
     private intervalContainer: Timer[] = [];
 
