@@ -2,13 +2,12 @@ import {OnGatewayConnection, OnGatewayDisconnect, WebSocketGateway, WebSocketSer
 import {Client, Server} from "socket.io";
 import {TaskConfigurationService} from "./services/TaskConfigurationService";
 import {Subscription} from "rxjs/Subscription";
-import * as _ from "lodash";
 
 @WebSocketGateway(3333)
 export class WorkerWSGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
     @WebSocketServer() private server: Server;
-    private clientSubscriptionMap: { [id: string]: Subscription } = {};
+    private clientSubscriptionMap: Map<string, Subscription>;
 
     constructor(private taskConfigService: TaskConfigurationService) {
     }
@@ -22,17 +21,20 @@ export class WorkerWSGateway implements OnGatewayConnection, OnGatewayDisconnect
     }
 
     private subscribeClient(client: Client) {
-        this.clientSubscriptionMap[client.id] = this.taskConfigService.getConfigurationSubject()
+        const subscription: Subscription = this.taskConfigService.getConfigurationSubject()
             .subscribe((config) => {
                 this.server.emit(TaskConfigurationService.CONFIG_UPDATE_EVENT, config);
             });
+
+        this.clientSubscriptionMap.set(client.id, subscription);
     }
 
     private unsubscribeClient(client: Client) {
-        const clientSubscription: Subscription = _.get(this.clientSubscriptionMap, client.id);
+        const clientSubscription: Subscription = this.clientSubscriptionMap.get(client.id);
 
         if (clientSubscription) {
             clientSubscription.unsubscribe();
+            this.clientSubscriptionMap.delete(client.id);
         }
     }
 }
