@@ -3,7 +3,7 @@ import {Client, Server} from "socket.io";
 import {TaskConfigurationService} from "./services/TaskConfigurationService";
 import {Subscription} from "rxjs/Subscription";
 
-@WebSocketGateway(3333)
+@WebSocketGateway()
 export class WorkerWSGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
     @WebSocketServer() private server: Server;
