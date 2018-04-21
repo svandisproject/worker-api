@@ -1,5 +1,5 @@
 {
   "APP_PORT": "3030",
   "API_SECRET": "testSocketSecret",
-  "API_HOST": "http://localhost:8000"
+  "API_HOST": "https://svandis-api.herokuapp.com"
 }
