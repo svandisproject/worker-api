@@ -11,13 +11,16 @@ export class TaskConfigurationService {
 
     private configurationSubject: Subject<TaskConfiguration> = new Subject<TaskConfiguration>();
     private intervalContainer: Timer[] = [];
+    private currentConfigs: TaskConfiguration[];
 
-    public initConfigurationSubject(configurations: TaskConfiguration[]) {
-        if (!_.isEmpty(this.intervalContainer)) {
+    public initConfigurationSubject(configs: TaskConfiguration[]) {
+        if (this.canReload(configs)) {
+            this.currentConfigs = configs;
+            this.reloadConfigurationSubject(configs);
             return;
         }
 
-        _.each(configurations, (conf) => {
+        _.each(configs, (conf) => {
             const interval: Timer =
                 setInterval(() => this.configurationSubject.next(conf), conf.time_interval);
             this.intervalContainer.push(interval);
@@ -31,5 +34,14 @@ export class TaskConfigurationService {
 
     public getConfigurationSubject(): Subject<TaskConfiguration> {
         return this.configurationSubject;
+    }
+
+    private reloadConfigurationSubject(config: TaskConfiguration[]): void {
+        this.destroyIntervals();
+        this.initConfigurationSubject(config);
+    }
+
+    private canReload(configs: TaskConfiguration[]): boolean {
+        return !_.isEqual(this.currentConfigs, configs);
     }
 }
