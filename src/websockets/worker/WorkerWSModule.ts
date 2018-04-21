@@ -16,21 +16,15 @@ import 'rxjs/add/operator/repeat';
     ],
 })
 export class WorkerWSModule implements OnModuleInit, OnModuleDestroy {
-    private readonly REPEAT_DELAY: number = 4000;
 
     constructor(private workerService: WorkerService,
                 private taskConfigurationService: TaskConfigurationService) {
     }
 
     onModuleInit(): void {
-        this.workerService.getTaskConfigurations()
-            .do((configs) => {
-                console.dir(configs, {depth: null, colors: true});
-                this.taskConfigurationService.initConfigurationSubject(configs);
-            })
-            .delay(this.REPEAT_DELAY)
-            .repeat()
-            .subscribe();
+        this.workerService.listenForTaskConfiguration().subscribe((configs) => {
+            this.taskConfigurationService.initConfigurationSubject(configs);
+        });
     }
 
     onModuleDestroy(): void {

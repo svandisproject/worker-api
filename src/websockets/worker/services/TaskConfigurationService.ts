@@ -15,16 +15,11 @@ export class TaskConfigurationService {
 
     public initConfigurationSubject(configs: TaskConfiguration[]) {
         if (this.canReload(configs)) {
-            this.currentConfigs = configs;
-            this.reloadConfigurationSubject(configs);
-            return;
+            this.destroyIntervals();
+            this.emitTaskConfigurations(configs);
+        } else if (this.currentConfigs === undefined) {
+            this.emitTaskConfigurations(configs);
         }
-
-        _.each(configs, (conf) => {
-            const interval: Timer =
-                setInterval(() => this.configurationSubject.next(conf), conf.time_interval);
-            this.intervalContainer.push(interval);
-        });
     }
 
     public destroyIntervals(): void {
@@ -36,12 +31,17 @@ export class TaskConfigurationService {
         return this.configurationSubject;
     }
 
-    private reloadConfigurationSubject(config: TaskConfiguration[]): void {
-        this.destroyIntervals();
-        this.initConfigurationSubject(config);
+    private emitTaskConfigurations(configs: TaskConfiguration[]) {
+        this.currentConfigs = configs;
+
+        _.each(configs, (conf) => {
+            const interval: Timer =
+                setInterval(() => this.configurationSubject.next(conf), conf.time_interval);
+            this.intervalContainer.push(interval);
+        });
     }
 
     private canReload(configs: TaskConfiguration[]): boolean {
-        return !_.isEqual(this.currentConfigs, configs);
+        return !_.isEqual(this.currentConfigs, configs) && this.currentConfigs !== undefined;
     }
 }
