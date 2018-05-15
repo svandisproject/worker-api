@@ -10,7 +10,7 @@ import 'rxjs/add/operator/repeat';
     imports: [
         ApiModule
     ],
-    components: [
+    providers: [
         WorkerWSGateway,
         TaskConfigurationService
     ],

@@ -1,11 +1,11 @@
-import {Component} from "@nestjs/common";
+import {Injectable} from "@nestjs/common";
 import {TaskConfiguration} from "../../../api/svandis/resources/dataModel/TaskConfiguration";
 import * as _ from "lodash";
 import {Subject} from "rxjs/Subject";
 import {setInterval} from "timers";
 import Timer = NodeJS.Timer;
 
-@Component()
+@Injectable()
 export class TaskConfigurationService {
     public static readonly CONFIG_UPDATE_EVENT: string = 'task-config-update';
 

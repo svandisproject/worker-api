@@ -4,7 +4,7 @@ import {SvandisApiModule} from "./svandis/SvandisApiModule";
 @Global()
 @Module({
     imports: [
-        SvandisApiModule
+        SvandisApiModule,
     ],
     exports: [
         SvandisApiModule
