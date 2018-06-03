@@ -1,4 +1,4 @@
-import {Injectable} from "@nestjs/common";
+import {Injectable, Logger} from "@nestjs/common";
 import {TaskConfiguration} from "../../../api/svandis/resources/dataModel/TaskConfiguration";
 import * as _ from "lodash";
 import {Subject} from "rxjs/Subject";
@@ -14,7 +14,8 @@ export class TaskConfigurationService {
     private currentConfigs: TaskConfiguration[];
 
     public initConfigurationSubject(configs: TaskConfiguration[]) {
-        if (this.canReload(configs)) {
+        Logger.log('Init...' + this.canReloadConfigs(configs))
+        if (this.canReloadConfigs(configs)) {
             this.destroyIntervals();
             this.emitTaskConfigurations(configs);
         } else if (this.currentConfigs === undefined) {
@@ -31,17 +32,24 @@ export class TaskConfigurationService {
         return this.configurationSubject;
     }
 
-    private emitTaskConfigurations(configs: TaskConfiguration[]) {
-        this.currentConfigs = configs;
-
-        _.each(configs, (conf) => {
-            const interval: Timer =
-                setInterval(() => this.configurationSubject.next(conf), conf.time_interval);
-            this.intervalContainer.push(interval);
-        });
+    public canReloadConfigs(configs: TaskConfiguration[]): boolean {
+        return !_.isEqual(this.currentConfigs, configs) && this.currentConfigs !== undefined;
     }
 
-    private canReload(configs: TaskConfiguration[]): boolean {
-        return !_.isEqual(this.currentConfigs, configs) && this.currentConfigs !== undefined;
+    private emitTaskConfigurations(configs: TaskConfiguration[]) {
+        this.currentConfigs = configs;
+        _.forEach(configs, (conf, index) => {
+            const interval: Timer =
+                setInterval(() => {
+                        if (index === configs.length - 1) {
+                            this.configurationSubject.next(conf);
+                            this.configurationSubject.complete();
+                        } else {
+                            this.configurationSubject.next(conf);
+                        }
+                    }, conf.time_interval
+                );
+            this.intervalContainer.push(interval);
+        });
     }
 }
