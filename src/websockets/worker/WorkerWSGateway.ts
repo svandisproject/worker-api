@@ -22,7 +22,6 @@ export class WorkerWSGateway implements OnGatewayConnection, OnGatewayDisconnect
     }
 
     private subscribeClient(client: Client) {
-        // TODO: Add repeatWhen
         const subscription: Subscription = this.taskConfigService.getConfigurationSubject()
             .subscribe((config) => {
                 Logger.log('Config received, emitting');

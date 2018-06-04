@@ -43,7 +43,6 @@ export class TaskConfigurationService {
                 setInterval(() => {
                         if (index === configs.length - 1) {
                             this.configurationSubject.next(conf);
-                            this.configurationSubject.complete();
                         } else {
                             this.configurationSubject.next(conf);
                         }
