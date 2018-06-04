@@ -7,7 +7,7 @@ import {WorkerService} from "./services/WorkerService";
     imports: [
         HttpModule
     ],
-    components: [
+    providers: [
         WorkerResource,
         WorkerService
     ],

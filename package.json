@@ -14,15 +14,16 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-    "@nestjs/common": "^4.5.9",
-    "@nestjs/core": "^4.5.10",
-    "@nestjs/microservices": "^4.5.8",
-    "@nestjs/testing": "^4.5.5",
-    "@nestjs/websockets": "^4.5.8",
+    "@nestjs/common": "^5.0.0",
+    "@nestjs/core": "^5.0.0",
+    "@nestjs/microservices": "^5.0.0",
+    "@nestjs/testing": "^5.0.0",
+    "@nestjs/websockets": "^5.0.0",
     "lodash": "^4.17.5",
     "reflect-metadata": "^0.1.12",
-    "rxjs": "^5.5.6",
-    "typescript": "^2.6.2"
+    "rxjs": "^6.0.0",
+    "rxjs-compat": "^6.0.0",
+    "typescript": "^2.8.1"
   },
   "devDependencies": {
     "@types/express": "^4.0.39",
@@ -36,9 +37,9 @@
     "prettier": "^1.11.1",
     "supertest": "^3.0.0",
     "ts-jest": "^21.2.4",
-    "ts-node": "^4.1.0",
     "tsconfig-paths": "^3.1.1",
-    "tslint": "5.3.2"
+    "ts-node": "^6.0.0",
+    "tslint": "^5.9.1"
   },
   "jest": {
     "moduleFileExtensions": [

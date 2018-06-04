@@ -2,6 +2,7 @@ import {OnGatewayConnection, OnGatewayDisconnect, WebSocketGateway, WebSocketSer
 import {Client, Server} from "socket.io";
 import {TaskConfigurationService} from "./services/TaskConfigurationService";
 import {Subscription} from "rxjs/Subscription";
+import {Logger} from "@nestjs/common";
 
 @WebSocketGateway()
 export class WorkerWSGateway implements OnGatewayConnection, OnGatewayDisconnect {
@@ -23,6 +24,7 @@ export class WorkerWSGateway implements OnGatewayConnection, OnGatewayDisconnect
     private subscribeClient(client: Client) {
         const subscription: Subscription = this.taskConfigService.getConfigurationSubject()
             .subscribe((config) => {
+                Logger.log('Config received, emitting');
                 this.server.emit(TaskConfigurationService.CONFIG_UPDATE_EVENT, config);
             });
 

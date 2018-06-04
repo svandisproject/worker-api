@@ -1,12 +1,13 @@
-import {Component} from "@nestjs/common";
 import {WorkerResource} from "../resources/WorkerResource";
 import {Observable} from "rxjs/Observable";
 import {TaskConfiguration} from "../resources/dataModel/TaskConfiguration";
 import "rxjs/add/operator/map";
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/interval';
+import {Injectable} from "@nestjs/common";
+import {switchMap} from "rxjs/internal/operators";
 
-@Component()
+@Injectable()
 export class WorkerService {
     private readonly POLLING_INTERVAL: number = 60000;
 
@@ -16,8 +17,8 @@ export class WorkerService {
     listenForTaskConfiguration(): Observable<TaskConfiguration[]> {
         const pollingInterval: Observable<number> = Observable.interval(this.POLLING_INTERVAL);
 
-        return pollingInterval.switchMap(() => {
-            return this.workerResource.schedule().map((response) => response.data);
-        });
+        return pollingInterval.pipe(
+            switchMap(() => this.workerResource.schedule().map((response) => response.data))
+        );
     }
 }
