@@ -13,7 +13,10 @@ export class UrlCacheService extends CassandraAdapter {
         const query = 'SELECT * FROM crawled_urls WHERE hash = ?';
         return this.cassandraService.getClient()
             .execute(query, [md5(url)], {prepare: true})
-            .then((res) => res.first() as UrlCacheItem);
+            .then((res) => {
+                const cacheItem = res.first() as UrlCacheItem;
+                return cacheItem || {url: url};
+            });
     }
 }
 
