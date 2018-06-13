@@ -5,6 +5,8 @@ import {WorkerService} from "../../api/svandis/services/WorkerService";
 import {ApiModule} from "../../api/ApiModule";
 import 'rxjs/add/operator/delay';
 import 'rxjs/add/operator/repeat';
+import {CassandraClientService} from "./services/CassandraClientService";
+import {UrlCacheService} from "./services/UrlCacheService";
 
 @Module({
     imports: [
@@ -12,29 +14,17 @@ import 'rxjs/add/operator/repeat';
     ],
     providers: [
         WorkerWSGateway,
+        CassandraClientService,
+        UrlCacheService,
         TaskConfigurationService
     ],
 })
 export class WorkerWSModule implements OnModuleInit, OnModuleDestroy {
-
-    // @Client({
-    //     transport: Transport.TCP,
-    //     options: {
-    //         host: 'localhost',
-    //         port: 7777
-    //     }
-    // })
-    // private redisClient: ClientRedis;
-
     constructor(private workerService: WorkerService,
                 private taskConfigurationService: TaskConfigurationService) {
-
     }
 
     onModuleInit(): void {
-        // this.redisClient.connect()
-        //     .then(() => console.log('connected'))
-        //     .catch((err) => console.log(err));
         this.workerService.listenForTaskConfiguration().subscribe((configs) => {
             this.taskConfigurationService.initConfigurationSubject(configs);
         });

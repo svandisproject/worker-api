@@ -1,4 +1,4 @@
-import {Injectable, Logger} from "@nestjs/common";
+import {Injectable} from "@nestjs/common";
 import {TaskConfiguration} from "../../../api/svandis/resources/dataModel/TaskConfiguration";
 import * as _ from "lodash";
 import {Subject} from "rxjs/Subject";
@@ -12,9 +12,9 @@ export class TaskConfigurationService {
     private configurationSubject: Subject<TaskConfiguration> = new Subject<TaskConfiguration>();
     private intervalContainer: Timer[] = [];
     private currentConfigs: TaskConfiguration[];
+    private readonly emitIntervalTime = 20000;
 
     public initConfigurationSubject(configs: TaskConfiguration[]) {
-        Logger.log('Init...' + this.canReloadConfigs(configs))
         if (this.canReloadConfigs(configs)) {
             this.destroyIntervals();
             this.emitTaskConfigurations(configs);
@@ -37,6 +37,17 @@ export class TaskConfigurationService {
     }
 
     private emitTaskConfigurations(configs: TaskConfiguration[]) {
+        this.currentConfigs = configs;
+        const interval: Timer =
+            setInterval(
+                () => _.forEach(configs, (conf) => this.configurationSubject.next(conf)),
+                this.emitIntervalTime
+            );
+        this.intervalContainer.push(interval);
+    }
+
+    // TODO: REwork
+    private reworkEmits(configs: TaskConfiguration[]) {
         this.currentConfigs = configs;
         _.forEach(configs, (conf, index) => {
             const interval: Timer =

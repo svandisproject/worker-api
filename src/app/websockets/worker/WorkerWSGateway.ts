@@ -1,8 +1,9 @@
-import {OnGatewayConnection, OnGatewayDisconnect, WebSocketGateway, WebSocketServer} from "@nestjs/websockets";
+import {OnGatewayConnection, OnGatewayDisconnect, SubscribeMessage, WebSocketGateway, WebSocketServer} from "@nestjs/websockets";
 import {Client, Server} from "socket.io";
 import {TaskConfigurationService} from "./services/TaskConfigurationService";
 import {Subscription} from "rxjs/Subscription";
 import {Logger} from "@nestjs/common";
+import {UrlCacheService} from "./services/UrlCacheService";
 
 @WebSocketGateway()
 export class WorkerWSGateway implements OnGatewayConnection, OnGatewayDisconnect {
@@ -10,7 +11,18 @@ export class WorkerWSGateway implements OnGatewayConnection, OnGatewayDisconnect
     @WebSocketServer() private server: Server;
     private clientSubscriptionMap: Map<string, Subscription> = new Map<string, Subscription>();
 
-    constructor(private taskConfigService: TaskConfigurationService) {
+    constructor(private taskConfigService: TaskConfigurationService,
+                private urlCache: UrlCacheService) {
+    }
+
+    @SubscribeMessage('validate')
+    onEvent(client, data: { url: string }): any {
+        const event = 'validate-complete';
+
+        return this.urlCache.findByUrl(data.url)
+            .then((res) => {
+                return {event: event, data: res};
+            });
     }
 
     public handleConnection(client: Client): any {
