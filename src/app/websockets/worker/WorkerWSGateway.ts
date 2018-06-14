@@ -3,7 +3,9 @@ import {Client, Server} from "socket.io";
 import {TaskConfigurationService} from "./services/TaskConfigurationService";
 import {Subscription} from "rxjs/Subscription";
 import {Logger} from "@nestjs/common";
-import {UrlCacheService} from "./services/UrlCacheService";
+import {UrlCacheService, ValidatedUrls} from "./services/UrlCacheService";
+import {map} from "rxjs/operators";
+import {Observable} from "rxjs/Rx";
 
 @WebSocketGateway()
 export class WorkerWSGateway implements OnGatewayConnection, OnGatewayDisconnect {
@@ -16,13 +18,15 @@ export class WorkerWSGateway implements OnGatewayConnection, OnGatewayDisconnect
     }
 
     @SubscribeMessage('validate')
-    onEvent(client, data: { url: string }): any {
+    onEvent(client, data: { urls: string[], baseUrl: string }): Observable<ValidateResponse> {
         const event = 'validate-complete';
 
-        return this.urlCache.findByUrl(data.url)
-            .then((res) => {
-                return {event: event, data: res};
-            });
+        return this.urlCache.getValidatedUrls(data.urls, data.baseUrl)
+            .pipe(
+                map((res) => {
+                    return {event: event, data: res};
+                })
+            );
     }
 
     public handleConnection(client: Client): any {
@@ -51,4 +55,9 @@ export class WorkerWSGateway implements OnGatewayConnection, OnGatewayDisconnect
             this.clientSubscriptionMap.delete(client.id);
         }
     }
+}
+
+export interface ValidateResponse {
+    event: string;
+    data: ValidatedUrls;
 }
