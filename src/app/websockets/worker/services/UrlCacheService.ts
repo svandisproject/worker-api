@@ -1,8 +1,8 @@
 import {Injectable} from "@nestjs/common";
 import {CassandraAdapter} from "../../../common/cassandra/CassandraAdapter";
 import {CassandraClientService} from "./CassandraClientService";
-import {filter, mergeMap} from "rxjs/operators";
-import {of} from "rxjs/internal/observable/of";
+import {filter} from "rxjs/operators";
+import {Observable} from "rxjs/Rx";
 import md5 = require("md5");
 
 @Injectable()
@@ -12,15 +12,22 @@ export class UrlCacheService extends CassandraAdapter {
     }
 
     public getValidatedUrls(urls: string[], baseUrl: string): any {
-        return of(urls).pipe(
-            filter((url: string) => url !== baseUrl),
-            mergeMap((url: string) => {
-                return this.findByUrl(url)
-                    .then((res: UrlCacheItem) => {
-                        return {urls: res.hash ? '' : url};
-                    });
-            })
-        );
+        return Observable.create((observer) => {
+            const confirmedUrls: string[] = [];
+
+            urls.forEach((url, index) => {
+                this.findByUrl(url).then((res) => {
+                    if (!res.hash) {
+                        confirmedUrls.push(res.url);
+                        if (index === urls.length - 1) {
+                            observer.next({urls: confirmedUrls});
+                            observer.complete();
+                        }
+                    }
+                });
+            });
+        }).pipe(filter((url: string) => url !== baseUrl));
+
     }
 
     public findByUrl(url: string): Promise<UrlCacheItem> {
