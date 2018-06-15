@@ -1,7 +1,6 @@
 import {Injectable} from "@nestjs/common";
 import {CassandraAdapter} from "../../../common/cassandra/CassandraAdapter";
 import {CassandraClientService} from "./CassandraClientService";
-import {Observable} from "rxjs/Rx";
 import {filter, mergeMap} from "rxjs/operators";
 import {of} from "rxjs/internal/observable/of";
 import md5 = require("md5");
@@ -12,7 +11,7 @@ export class UrlCacheService extends CassandraAdapter {
         super();
     }
 
-    public getValidatedUrls(urls: string[], baseUrl: string): Observable<ValidatedUrls> {
+    public getValidatedUrls(urls: string[], baseUrl: string): any {
         return of(urls).pipe(
             filter((url: string) => url !== baseUrl),
             mergeMap((url: string) => {
