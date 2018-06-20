@@ -13,16 +13,17 @@ export class UrlCacheService extends CassandraAdapter {
 
     public getValidatedUrls(urls: string[], baseUrl: string): any {
         return Observable.create((observer) => {
-            const confirmedUrls: string[] = [];
+            const notConfirmedUrls: string[] = [];
 
             urls.forEach((url, index) => {
                 this.findByUrl(url).then((res) => {
                     if (!res.hash) {
-                        confirmedUrls.push(res.url);
-                        if (index === urls.length - 1) {
-                            observer.next({urls: confirmedUrls});
-                            observer.complete();
-                        }
+                        notConfirmedUrls.push(res.url);
+                    }
+
+                    if (index === urls.length - 1) {
+                        observer.next({urls: notConfirmedUrls});
+                        observer.complete();
                     }
                 });
             });
