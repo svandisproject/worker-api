@@ -9,7 +9,7 @@ import Timer = NodeJS.Timer;
 export class TaskConfigurationService {
     public static readonly CONFIG_UPDATE_EVENT: string = 'task-config-update';
 
-    private configurationSubject: Subject<TaskConfiguration> = new Subject<TaskConfiguration>();
+    private configurationSubject: Subject<TaskConfiguration[]> = new Subject<TaskConfiguration[]>();
     private intervalContainer: Timer[] = [];
     private currentConfigs: TaskConfiguration[];
     private readonly emitIntervalTime = 20000;
@@ -28,7 +28,7 @@ export class TaskConfigurationService {
         this.intervalContainer = [];
     }
 
-    public getConfigurationSubject(): Subject<TaskConfiguration> {
+    public getConfigurationSubject(): Subject<TaskConfiguration[]> {
         return this.configurationSubject;
     }
 
@@ -38,28 +38,32 @@ export class TaskConfigurationService {
 
     private emitTaskConfigurations(configs: TaskConfiguration[]) {
         this.currentConfigs = configs;
-        const interval: Timer =
-            setInterval(
-                () => _.forEach(configs, (conf) => this.configurationSubject.next(conf)),
-                this.emitIntervalTime
-            );
+        const interval = setInterval(() => this.configurationSubject.next(configs), this.emitIntervalTime);
         this.intervalContainer.push(interval);
     }
 
-    // TODO: REwork
-    private reworkEmits(configs: TaskConfiguration[]) {
-        this.currentConfigs = configs;
-        _.forEach(configs, (conf, index) => {
-            const interval: Timer =
-                setInterval(() => {
-                        if (index === configs.length - 1) {
-                            this.configurationSubject.next(conf);
-                        } else {
-                            this.configurationSubject.next(conf);
-                        }
-                    }, conf.time_interval
-                );
-            this.intervalContainer.push(interval);
-        });
-    }
+    // private reworkEmits(configs: TaskConfiguration[]) {
+    //     this.currentConfigs = configs;
+    //     _.forEach(configs, (conf, index) => {
+    //         const interval: Timer =
+    //             setInterval(() => {
+    //                     if (index === configs.length - 1) {
+    //                         this.configurationSubject.next(conf);
+    //                     } else {
+    //                         this.configurationSubject.next(conf);
+    //                     }
+    //                 }, conf.time_interval
+    //             );
+    //         this.intervalContainer.push(interval);
+    //     });
+    // }
+    //
+    // private intervaledConfigEmitter(configs: TaskConfiguration[]) {
+    //     const interval: Timer =
+    //         setInterval(
+    //             () => _.forEach(configs, (conf) => this.configurationSubject.next(conf)),
+    //             this.emitIntervalTime
+    //         );
+    //     this.intervalContainer.push(interval);
+    // }
 }

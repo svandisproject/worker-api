@@ -20,10 +20,11 @@ export class WorkerWSGateway implements OnGatewayConnection, OnGatewayDisconnect
     @SubscribeMessage('validate')
     onEvent(client, data: { urls: string[], baseUrl: string }): Observable<ValidateResponse> {
         const event = 'validate-complete';
-
+        Logger.log('Urls received for validation');
         return this.urlCache.getValidatedUrls(data.urls, data.baseUrl)
             .pipe(
                 map((res) => {
+                    console.log(res);
                     return {event: event, data: res};
                 })
             );
@@ -39,9 +40,9 @@ export class WorkerWSGateway implements OnGatewayConnection, OnGatewayDisconnect
 
     private subscribeClient(client: Client) {
         const subscription: Subscription = this.taskConfigService.getConfigurationSubject()
-            .subscribe((config) => {
-                Logger.log('Config received, emitting');
-                this.server.emit(TaskConfigurationService.CONFIG_UPDATE_EVENT, config);
+            .subscribe((configs) => {
+                Logger.log('Configs received, emitting');
+                this.server.emit(TaskConfigurationService.CONFIG_UPDATE_EVENT, configs);
             });
 
         this.clientSubscriptionMap.set(client.id, subscription);
