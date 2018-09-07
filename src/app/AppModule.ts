@@ -7,7 +7,11 @@ import {TypeOrmModule} from "@nestjs/typeorm";
     imports: [
         ApiModule,
         WebSocketModule,
-        TypeOrmModule.forRoot()
+        TypeOrmModule.forRoot({
+            type: 'postgres',
+            url: process.env.PG_CONNECTION_URL || '',
+            ssl: true
+        })
     ],
     exports: [
         ApiModule
