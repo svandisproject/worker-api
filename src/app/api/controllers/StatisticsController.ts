@@ -19,7 +19,6 @@ export class StatisticsController {
         const rawSql = this.getRawCrawledPostsSQLForEmail(userData.username);
 
         this.connection.query(rawSql).then(posts => {
-            console.log(posts);
             return posts;
         }).catch(err => {
             console.error(err);
