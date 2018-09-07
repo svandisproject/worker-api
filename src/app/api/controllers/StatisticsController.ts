@@ -1,4 +1,4 @@
-import {Controller, Get, Req, Injectable} from "@nestjs/common";
+import {Controller, Get, Req, Res, Injectable} from "@nestjs/common";
 import {InjectConnection} from "@nestjs/typeorm";
 import {Connection} from 'typeorm';
 import {decode} from 'jsonwebtoken';
@@ -10,7 +10,7 @@ export class StatisticsController {
     }
 
     @Get()
-    findAll(@Req() request): object[] {
+    findAll(@Req() request, @Res() response): object[] {
         if (!request.headers.authorization) {
             return [];
         }
@@ -19,10 +19,10 @@ export class StatisticsController {
         const rawSql = this.getRawCrawledPostsSQLForEmail(userData.username);
 
         this.connection.query(rawSql).then(posts => {
-            return posts;
+            response.json(posts);
         }).catch(err => {
             console.error(err);
-            return [];
+            response.json([]);
         });
     }
 
