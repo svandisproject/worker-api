@@ -6,6 +6,7 @@ import {Logger} from "@nestjs/common";
 import {UrlCacheService, ValidatedUrls} from "./services/UrlCacheService";
 import {map} from "rxjs/operators";
 import {Observable} from "rxjs/Rx";
+import * as _ from 'lodash';
 
 @WebSocketGateway()
 export class WorkerWSGateway implements OnGatewayConnection, OnGatewayDisconnect {
@@ -42,7 +43,8 @@ export class WorkerWSGateway implements OnGatewayConnection, OnGatewayDisconnect
         const subscription: Subscription = this.taskConfigService.getConfigurationSubject()
             .subscribe((configs) => {
                 Logger.log('Configs received, emitting');
-                this.server.emit(TaskConfigurationService.CONFIG_UPDATE_EVENT, configs);
+
+                this.server.emit(TaskConfigurationService.CONFIG_UPDATE_EVENT, _.sampleSize(configs, 5));
             });
 
         this.clientSubscriptionMap.set(client.id, subscription);
