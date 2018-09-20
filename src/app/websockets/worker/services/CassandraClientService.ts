@@ -8,9 +8,9 @@ export class CassandraClientService {
 
     constructor() {
         this.client = new Client({
-            contactPoints: ['34.247.192.31', '34.254.25.212', '34.247.150.247'],
+            contactPoints: ['34.253.68.126', '18.202.139.34', '18.202.128.219'],
             keyspace: 'svandis_url_cache',
-            authProvider: new PlainTextAuthProvider('iccassandra', '94bf4145d00513abda0e919175ce9146')
+            authProvider: new PlainTextAuthProvider('iccassandra', 'f8fdf1c9d5af30af42a6cb8eca3e9e40')
         });
     }
 

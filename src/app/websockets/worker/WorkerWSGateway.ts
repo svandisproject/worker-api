@@ -44,7 +44,7 @@ export class WorkerWSGateway implements OnGatewayConnection, OnGatewayDisconnect
             .subscribe((configs) => {
                 Logger.log('Configs received, emitting');
 
-                this.server.emit(TaskConfigurationService.CONFIG_UPDATE_EVENT, _.sampleSize(configs, 5));
+                this.server.emit(TaskConfigurationService.CONFIG_UPDATE_EVENT, _.sampleSize(configs, 1));
             });
 
         this.clientSubscriptionMap.set(client.id, subscription);
