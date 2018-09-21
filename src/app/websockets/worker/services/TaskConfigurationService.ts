@@ -41,29 +41,4 @@ export class TaskConfigurationService {
         const interval = setInterval(() => this.configurationSubject.next(configs), this.emitIntervalTime);
         this.intervalContainer.push(interval);
     }
-
-    // private reworkEmits(configs: TaskConfiguration[]) {
-    //     this.currentConfigs = configs;
-    //     _.forEach(configs, (conf, index) => {
-    //         const interval: Timer =
-    //             setInterval(() => {
-    //                     if (index === configs.length - 1) {
-    //                         this.configurationSubject.next(conf);
-    //                     } else {
-    //                         this.configurationSubject.next(conf);
-    //                     }
-    //                 }, conf.time_interval
-    //             );
-    //         this.intervalContainer.push(interval);
-    //     });
-    // }
-    //
-    // private intervaledConfigEmitter(configs: TaskConfiguration[]) {
-    //     const interval: Timer =
-    //         setInterval(
-    //             () => _.forEach(configs, (conf) => this.configurationSubject.next(conf)),
-    //             this.emitIntervalTime
-    //         );
-    //     this.intervalContainer.push(interval);
-    // }
 }
