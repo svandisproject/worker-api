@@ -25,7 +25,7 @@ export class WorkerWSGateway implements OnGatewayConnection, OnGatewayDisconnect
         return this.urlCache.getValidatedUrls(data.urls, data.baseUrl)
             .pipe(
                 map((res) => {
-                    console.log(res);
+                    console.log('not confirmed urls :', res);
                     return {event: event, data: res};
                 })
             );

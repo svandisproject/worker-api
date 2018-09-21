@@ -17,7 +17,7 @@ export class UrlCacheService extends CassandraAdapter {
 
             urls.forEach((url, index) => {
                 this.findByUrl(url).then((res) => {
-                    if (!res.hash) {
+                    if (res.confirmation < 10) {
                         notConfirmedUrls.push(res.url);
                     }
 
@@ -45,7 +45,7 @@ export class UrlCacheService extends CassandraAdapter {
 export interface UrlCacheItem {
     id?: string;
     url?: string;
-    confirmation?: string;
+    confirmation?: number;
     hash?: string;
 }
 
