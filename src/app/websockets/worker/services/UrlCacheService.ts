@@ -37,7 +37,7 @@ export class UrlCacheService extends CassandraAdapter {
             .execute(query, [md5(url)], {prepare: true})
             .then((res) => {
                 const cacheItem = res.first() as UrlCacheItem;
-                return cacheItem || {url: url};
+                return cacheItem || {url: url, confirmations: 0};
             });
     }
 }
