@@ -18,7 +18,9 @@ export class WorkerService {
         const pollingInterval: Observable<number> = Observable.interval(this.POLLING_INTERVAL);
 
         return pollingInterval.pipe(
-            switchMap(() => this.workerResource.schedule().map((response) => response.data))
+            switchMap(() => this.workerResource.schedule().map((response) => {
+                return response.data.filter(config => config.type === 'web');
+            }))
         );
     }
 }
