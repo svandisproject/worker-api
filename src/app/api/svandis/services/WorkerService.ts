@@ -5,7 +5,7 @@ import "rxjs/add/operator/map";
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/interval';
 import {Injectable} from "@nestjs/common";
-import {switchMap} from "rxjs/internal/operators";
+import {map, switchMap} from "rxjs/internal/operators";
 
 @Injectable()
 export class WorkerService {
@@ -18,9 +18,10 @@ export class WorkerService {
         const pollingInterval: Observable<number> = Observable.interval(this.POLLING_INTERVAL);
 
         return pollingInterval.pipe(
-            switchMap(() => this.workerResource.schedule().map((response) => {
-                return response.data.filter(config => config.type === 'web');
-            }))
-        );
+            switchMap(() => this.workerResource.schedule()
+                .pipe(
+                    map((response) => response.data.filter((config) => config.type === 'web'))
+                )
+            ));
     }
 }
