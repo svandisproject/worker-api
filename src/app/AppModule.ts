@@ -10,7 +10,8 @@ import {TypeOrmModule} from "@nestjs/typeorm";
         TypeOrmModule.forRoot({
             type: 'postgres',
             url: process.env.PG_CONNECTION_URL || '',
-            ssl: true
+            ssl: true,
+            entities: ['src/**/**.entity{.ts,.js}']
         })
     ],
     exports: [

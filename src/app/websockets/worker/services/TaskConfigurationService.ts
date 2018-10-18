@@ -1,5 +1,5 @@
 import {Injectable} from "@nestjs/common";
-import {TaskConfiguration} from "../../../api/svandis/resources/dataModel/TaskConfiguration";
+import {TaskConfiguration} from "../../../api/svnadis-api/v1/svandis-kami-api/resources/dataModel/TaskConfiguration";
 import * as _ from "lodash";
 import {Subject} from "rxjs/Subject";
 import {setInterval} from "timers";

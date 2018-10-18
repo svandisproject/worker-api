@@ -16,5 +16,5 @@ import {WorkerService} from "./services/WorkerService";
         WorkerService
     ]
 })
-export class SvandisApiModule {
+export class SvandisKamiApiModule {
 }
