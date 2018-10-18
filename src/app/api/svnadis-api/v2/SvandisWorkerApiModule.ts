@@ -1,13 +1,15 @@
 import {Module} from "@nestjs/common";
-import {StatisticsController} from "./statisctics/controllers/StatisticsController";
+import {ApiStatisticsModule} from "./statisctics/ApiStatisticsModule";
+import {ApiTagsModule} from "./tags/ApiTagsModule";
 
 @Module({
     imports: [
-        StatisticsController,
+        ApiStatisticsModule,
+        ApiTagsModule
     ],
-    controllers: [],
     exports: [
-        StatisticsController
+        ApiStatisticsModule,
+        ApiTagsModule
     ]
 })
 export class SvandisWorkerApiModule {

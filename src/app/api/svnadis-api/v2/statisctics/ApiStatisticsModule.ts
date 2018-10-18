@@ -4,10 +4,7 @@ import {StatisticsController} from "./controllers/StatisticsController";
 @Module({
     controllers: [
         StatisticsController
-    ],
-    exports: [
-        StatisticsController
     ]
 })
-export class StatisticsModule {
+export class ApiStatisticsModule {
 }
