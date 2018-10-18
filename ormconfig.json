@@ -1,5 +1,0 @@
-{
-  "type": "postgres",
-  "entities": ["src/**/**.entity{.ts,.js}"],
-  "synchronize": true
-}
