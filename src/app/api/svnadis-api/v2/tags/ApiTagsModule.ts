@@ -5,13 +5,17 @@ import {TagEntity} from "./entities/Tag.entity";
 import {RepositoryKeys} from "./RepositoryKeys";
 import {TagService} from "./services/TagService";
 import {TypeOrmModule} from "@nestjs/typeorm";
+import {TagGroupEntity} from "./entities/TagGroup.entity";
+import {TagGroupService} from "./services/TagGroupService";
+import {TagGroupController} from "./controllers/TagGroupController";
 
 @Module({
     imports: [
         TypeOrmModule
     ],
     controllers: [
-        TagController
+        TagController,
+        TagGroupController
     ],
     providers: [
         {
@@ -19,6 +23,12 @@ import {TypeOrmModule} from "@nestjs/typeorm";
             useFactory: (connection: Connection) => connection.getRepository(TagEntity),
             inject: [Connection],
         },
+        {
+            provide: RepositoryKeys.tagGroupRepo,
+            useFactory: (connection: Connection) => connection.getRepository(TagGroupEntity),
+            inject: [Connection],
+        },
+        TagGroupService,
         TagService
     ]
 })

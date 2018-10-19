@@ -1,3 +1,4 @@
 export const RepositoryKeys = {
-    tagRepo: 'TagRepository'
-}
+    tagRepo: 'TagRepository',
+    tagGroupRepo: 'TagGroupRepository',
+};
