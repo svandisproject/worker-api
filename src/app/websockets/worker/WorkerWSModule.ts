@@ -1,7 +1,7 @@
 import {Module, OnModuleDestroy, OnModuleInit} from "@nestjs/common";
 import {WorkerWSGateway} from "./WorkerWSGateway";
 import {TaskConfigurationService} from "./services/TaskConfigurationService";
-import {WorkerService} from "../../api/svandis/services/WorkerService";
+import {WorkerService} from "../../api/svnadis-api/v1/svandis-kami-api/services/WorkerService";
 import {ApiModule} from "../../api/ApiModule";
 import 'rxjs/add/operator/delay';
 import 'rxjs/add/operator/repeat';

@@ -3,7 +3,7 @@ import {Injectable} from "@nestjs/common";
 import {SvandisApi} from "../config/SvandisApi";
 import {Observable} from "rxjs/Observable";
 import {TaskConfiguration} from "./dataModel/TaskConfiguration";
-import {AxiosResponse} from "@nestjs/common/http/interfaces/axios.interfaces";
+import {AxiosResponse} from "axios";
 
 /**
  * TODO: Error handling required
