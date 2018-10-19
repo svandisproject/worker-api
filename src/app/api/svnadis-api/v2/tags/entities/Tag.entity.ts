@@ -1,4 +1,4 @@
-import {Column, Entity, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
+import {Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
 import {Tag} from "../dataModel/Tag";
 import {ApiModelProperty} from "@nestjs/swagger";
 import {TagGroupEntity} from "./TagGroup.entity";
@@ -13,6 +13,9 @@ export class TagEntity implements Tag {
     @Column({length: 500})
     title: string;
 
+    @JoinColumn({name: 'group_id', referencedColumnName: 'id'})
     @ManyToOne((type) => TagGroupEntity, (tagGroup) => tagGroup.tags)
-    tagGroup: TagGroupEntity;
+    group: TagGroupEntity;
+
+    // posts: Post[];
 }

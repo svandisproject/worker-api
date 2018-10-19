@@ -13,6 +13,7 @@ import {TypeOrmModule} from "@nestjs/typeorm";
             type: 'postgres',
             url: process.env.PG_CONNECTION_URL || '',
             ssl: true,
+            logging: ["error"],
             entities: ['src/**/**.entity{.ts,.js}']
         })
     ],

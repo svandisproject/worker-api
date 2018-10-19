@@ -11,9 +11,9 @@ export class Post {
     content?: string;
     @ApiModelProperty()
     source?: string;
-    @ApiModelProperty()
+    @ApiModelProperty({type: Date})
     published_at?: Date;
-    @ApiModelProperty()
+    @ApiModelProperty({type: Date})
     created_at?: Date;
     @ApiModelProperty()
     imageUrl?: string;
