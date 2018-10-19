@@ -2,7 +2,7 @@ import {ApiModelProperty} from "@nestjs/swagger";
 
 export class Post {
     @ApiModelProperty()
-    id?: string;
+    id?: number;
     @ApiModelProperty()
     title?: string;
     @ApiModelProperty()
