@@ -1,4 +1,4 @@
-import {Body, Controller, Get, Param, Post, UseGuards} from "@nestjs/common";
+import {Body, Controller, Delete, Get, Param, Post, Query, UseGuards} from "@nestjs/common";
 import {TagGroupService} from "../services/TagGroupService";
 import {ApiResponse, ApiUseTags} from "@nestjs/swagger";
 import {AuthGuard} from "@nestjs/passport";
@@ -20,17 +20,25 @@ export class TagGroupController {
     @ApiResponse({status: 200, type: TagGroupEntity, description: 'Returns Tag Group'})
     @Get(':id')
     @UseGuards(AuthGuard('bearer'))
-    public findOne(@Param('id') id: string): Promise<TagGroupEntity> {
+    public findOne(@Param('id') id: string, @Query() query): Promise<TagGroupEntity> {
+        if (query.title) {
+            // TODO: Implement proper filters
+            return this.tagGroupService.findOneByTitle(query.title);
+        }
         return this.tagGroupService.findOne(id);
+    }
+
+    @ApiResponse({status: 200, type: TagGroupEntity, description: 'Returns Tag Group'})
+    @Delete(':id')
+    @UseGuards(AuthGuard('bearer'))
+    public delete(@Param('id') id: string): Promise<void> {
+        return this.tagGroupService.delete(id);
     }
 
     @ApiResponse({status: 200, type: TagGroupEntity, description: 'New Tag Group'})
     @Post()
     @UseGuards(AuthGuard('bearer'))
     public create(@Body() group: TagGroupEntity): Promise<TagGroupEntity> {
-        return this.tagGroupService.create(group).then((a) => {
-            console.log(a);
-            return a;
-        });
+        return this.tagGroupService.create(group);
     }
 }

@@ -8,7 +8,7 @@ export class TagGroupEntity {
     @PrimaryColumn()
     id: number;
     @ApiModelProperty()
-    @Column({length: 500})
+    @Column({length: 500, unique: true})
     title: string;
     @ApiModelProperty()
     @Column()
