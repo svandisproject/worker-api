@@ -7,7 +7,7 @@ import {TagGroupEntity} from "./TagGroup.entity";
 export class TagEntity implements Tag {
     @ApiModelProperty()
     @PrimaryGeneratedColumn()
-    id: string;
+    id: number;
 
     @ApiModelProperty()
     @Column({length: 500})
