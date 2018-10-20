@@ -24,7 +24,6 @@ export class TagController {
     @Get('/filter')
     @UseGuards(AuthGuard('bearer'))
     public filter(@Query('filter') filterString: string): Promise<TagEntity[]> {
-        const filterOptions = JSON.parse(Buffer.from(filterString, 'base64').toString());
-        return this.tagService.filter(filterOptions);
+        return this.tagService.filter(filterString);
     }
 }

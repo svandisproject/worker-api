@@ -6,6 +6,7 @@ import {Pageable, PageRequest} from "../../../../pagination/Pageable";
 import {PageableFactory} from "../../../../pagination/PageableFactory";
 import * as _ from "lodash";
 import { FilterOption } from "app/common/typeorm/FilterOption";
+import { FilterStringToQueryStringConverter } from "app/common/typeorm/FilterStringToQueryStringConverter";
 
 
 @Injectable()
@@ -25,8 +26,15 @@ export class TagService {
         return await PageableFactory.build(q.getMany(), pageRequest, q.getCount());
     }
 
-    async filter(filterOptions: FilterOption[]): Promise<TagEntity[]> {
-        
-        return await [];
+    async filter(filterString: string): Promise<TagEntity[]> {
+        const whereString = FilterStringToQueryStringConverter.convert(filterString);
+        console.log(whereString);
+        const tags = this.tagRepo
+            .createQueryBuilder('t')
+            .select()
+            .where(whereString)
+            .getMany();
+
+        return await tags;
     }
 }

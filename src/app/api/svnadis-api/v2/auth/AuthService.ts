@@ -7,6 +7,10 @@ export class AuthService {
     }
 
     async validateUser(token: string): Promise<any> {
-        return await this.postResource.findAll(token);
+        try {
+            return await this.postResource.findAll(token).toPromise();
+        } catch (err) {
+            return null;
+        }
     }
 }

@@ -41,4 +41,11 @@ export class TagGroupController {
     public create(@Body() group: TagGroupEntity): Promise<TagGroupEntity> {
         return this.tagGroupService.create(group);
     }
+
+    @ApiResponse({status: 200, type: TagGroupEntity, isArray: true, description: 'Filter Tags'})
+    @Get('/filter')
+    @UseGuards(AuthGuard('bearer'))
+    public filter(@Query('filter') filterString: string): Promise<TagGroupEntity[]> {
+        return this.tagGroupService.filter(filterString);
+    }
 }
