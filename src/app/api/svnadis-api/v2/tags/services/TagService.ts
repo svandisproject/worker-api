@@ -5,6 +5,9 @@ import {InjectRepository} from "@nestjs/typeorm";
 import {Pageable, PageRequest} from "../../../../pagination/Pageable";
 import {PageableFactory} from "../../../../pagination/PageableFactory";
 import * as _ from "lodash";
+import { FilterOption } from "app/common/typeorm/FilterOption";
+import { FilterStringToQueryStringConverter } from "app/common/typeorm/FilterStringToQueryStringConverter";
+
 
 @Injectable()
 export class TagService {
@@ -21,5 +24,17 @@ export class TagService {
             .take(pageRequest.size);
 
         return await PageableFactory.build(q.getMany(), pageRequest, q.getCount());
+    }
+
+    async filter(filterString: string): Promise<TagEntity[]> {
+        const whereString = FilterStringToQueryStringConverter.convert(filterString);
+        console.log(whereString);
+        const tags = this.tagRepo
+            .createQueryBuilder('t')
+            .select()
+            .where(whereString)
+            .getMany();
+
+        return await tags;
     }
 }
