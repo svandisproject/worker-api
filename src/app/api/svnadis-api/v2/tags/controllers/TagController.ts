@@ -4,6 +4,8 @@ import {TagService} from "../services/TagService";
 import {ApiResponse, ApiUseTags} from "@nestjs/swagger";
 import {AuthGuard} from "@nestjs/passport/dist/auth.guard";
 import {Pageable, PageRequest} from "../../../../pagination/Pageable";
+import {FilterOption} from "../../../../../common/typeorm/FilterOption";
+
 
 @ApiUseTags('tag')
 @Controller('tag')
@@ -16,5 +18,13 @@ export class TagController {
     @UseGuards(AuthGuard('bearer'))
     public findAll(@Query() params: PageRequest): Promise<Pageable<TagEntity>> {
         return this.tagService.findAll(params);
+    }
+
+    @ApiResponse({status: 200, type: TagEntity, isArray: true, description: 'Filter Tags'})
+    @Get('/filter')
+    @UseGuards(AuthGuard('bearer'))
+    public filter(@Query('filter') filterString: string): Promise<TagEntity[]> {
+        const filterOptions = JSON.parse(Buffer.from(filterString, 'base64').toString());
+        return this.tagService.filter(filterOptions);
     }
 }

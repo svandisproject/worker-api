@@ -5,6 +5,8 @@ import {InjectRepository} from "@nestjs/typeorm";
 import {Pageable, PageRequest} from "../../../../pagination/Pageable";
 import {PageableFactory} from "../../../../pagination/PageableFactory";
 import * as _ from "lodash";
+import { FilterOption } from "app/common/typeorm/FilterOption";
+
 
 @Injectable()
 export class TagService {
@@ -21,5 +23,10 @@ export class TagService {
             .take(pageRequest.size);
 
         return await PageableFactory.build(q.getMany(), pageRequest, q.getCount());
+    }
+
+    async filter(filterOptions: FilterOption[]): Promise<TagEntity[]> {
+        
+        return await [];
     }
 }
