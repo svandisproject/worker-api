@@ -33,7 +33,6 @@ export class TagGroupService {
 
     async filter(filterString: string): Promise<TagGroupEntity[]> {
         const whereString = FilterStringToQueryStringConverter.convert(filterString);
-        console.log(whereString);
         const tagGroups = this.tagGroupRepo
             .createQueryBuilder('t')
             .select()
