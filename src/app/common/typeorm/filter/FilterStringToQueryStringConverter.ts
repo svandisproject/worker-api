@@ -1,20 +1,19 @@
-import { FilterOption } from "./FilterOption";
+import {FilterOption} from "./FilterOption";
 import * as _ from "lodash";
-
 
 export class FilterStringToQueryStringConverter {
     public static convert(filterString: string): string {
         const filterOptions = this.decode(filterString);
 
         const operationsMap = {
-            'eq': '=',
-            'gt': '>',
-            'lt': '<',
-            'lk': 'LIKE',
-            'in': 'IN'
+            eq: '=',
+            gt: '>',
+            lt: '<',
+            lk: 'LIKE',
+            in: 'IN'
         };
 
-        let queryOptions = filterOptions.map(option => {
+        const queryOptions = filterOptions.map((option) => {
             let str = `${option.property} ${operationsMap[option.type]} `;
             if (_.isString(option.value)) {
                 str += `'${option.value}'`;

@@ -2,7 +2,7 @@ import {Repository} from "typeorm";
 import {Injectable} from "@nestjs/common";
 import {TagGroupEntity} from "../entities/TagGroup.entity";
 import {InjectRepository} from "@nestjs/typeorm";
-import { FilterStringToQueryStringConverter } from "app/common/typeorm/FilterStringToQueryStringConverter";
+import {FilterStringToQueryStringConverter} from "app/common/typeorm/filter/FilterStringToQueryStringConverter";
 
 @Injectable()
 export class TagGroupService {

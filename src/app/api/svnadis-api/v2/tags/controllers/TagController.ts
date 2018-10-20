@@ -3,9 +3,7 @@ import {TagEntity} from "../entities/Tag.entity";
 import {TagService} from "../services/TagService";
 import {ApiResponse, ApiUseTags} from "@nestjs/swagger";
 import {AuthGuard} from "@nestjs/passport/dist/auth.guard";
-import {Pageable, PageRequest} from "../../../../pagination/Pageable";
-import {FilterOption} from "../../../../../common/typeorm/FilterOption";
-
+import {Pageable, PageRequest} from "../../../../../common/typeorm/pagination/Pageable";
 
 @ApiUseTags('tag')
 @Controller('tag')
