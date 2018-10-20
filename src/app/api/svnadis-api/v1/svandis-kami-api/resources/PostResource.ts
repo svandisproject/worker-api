@@ -13,7 +13,7 @@ export class PostResource {
 
     public findAll(token: string): Observable<AxiosResponse<Post[]>> {
         return this.httpService.get(this.URL + '/post', {
-            headers: {Authorization: token}
+            headers: {Authorization: 'Bearer ' + token}
         });
     }
 }

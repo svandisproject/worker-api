@@ -2,12 +2,10 @@ import {Repository} from "typeorm";
 import {TagEntity} from "../entities/Tag.entity";
 import {Injectable} from "@nestjs/common";
 import {InjectRepository} from "@nestjs/typeorm";
-import {Pageable, PageRequest} from "../../../../pagination/Pageable";
-import {PageableFactory} from "../../../../pagination/PageableFactory";
+import {Pageable, PageRequest} from "../../../../../common/typeorm/pagination/Pageable";
+import {PageableFactory} from "../../../../../common/typeorm/pagination/PageableFactory";
 import * as _ from "lodash";
-import { FilterOption } from "app/common/typeorm/FilterOption";
-import { FilterStringToQueryStringConverter } from "app/common/typeorm/FilterStringToQueryStringConverter";
-
+import {FilterStringToQueryStringConverter} from "app/common/typeorm/filter/FilterStringToQueryStringConverter";
 
 @Injectable()
 export class TagService {
@@ -28,7 +26,6 @@ export class TagService {
 
     async filter(filterString: string): Promise<TagEntity[]> {
         const whereString = FilterStringToQueryStringConverter.convert(filterString);
-        console.log(whereString);
         const tags = this.tagRepo
             .createQueryBuilder('t')
             .select()

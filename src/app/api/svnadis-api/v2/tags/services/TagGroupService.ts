@@ -2,7 +2,7 @@ import {Repository} from "typeorm";
 import {Injectable} from "@nestjs/common";
 import {TagGroupEntity} from "../entities/TagGroup.entity";
 import {InjectRepository} from "@nestjs/typeorm";
-import { FilterStringToQueryStringConverter } from "app/common/typeorm/FilterStringToQueryStringConverter";
+import {FilterStringToQueryStringConverter} from "app/common/typeorm/filter/FilterStringToQueryStringConverter";
 
 @Injectable()
 export class TagGroupService {
@@ -33,7 +33,6 @@ export class TagGroupService {
 
     async filter(filterString: string): Promise<TagGroupEntity[]> {
         const whereString = FilterStringToQueryStringConverter.convert(filterString);
-        console.log(whereString);
         const tagGroups = this.tagGroupRepo
             .createQueryBuilder('t')
             .select()
