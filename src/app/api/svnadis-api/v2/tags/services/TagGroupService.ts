@@ -10,7 +10,7 @@ export class TagGroupService {
     }
 
     async findAll(): Promise<TagGroupEntity[]> {
-        return await this.tagGroupRepo.find();
+        return await this.tagGroupRepo.find({ relations: ['tags'] });
     }
 
     async create(tagGroup: TagGroupEntity): Promise<TagGroupEntity> {
