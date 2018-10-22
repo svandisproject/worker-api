@@ -2,7 +2,7 @@ import {FilterOption} from "./FilterOption";
 import * as _ from "lodash";
 
 export class FilterStringToQueryStringConverter {
-    public static convert(filterString: string, queryBuilderPrefix: string | ''): string {
+    public static convert(filterString: string, queryBuilderPrefix = ''): string {
         const filterOptions = this.decode(filterString);
 
         const operationsMap = {
