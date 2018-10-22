@@ -16,6 +16,4 @@ export class TagEntity implements Tag {
     @JoinColumn({name: 'group_id', referencedColumnName: 'id'})
     @ManyToOne((type) => TagGroupEntity, (tagGroup) => tagGroup.tags)
     group: TagGroupEntity;
-
-    // posts: Post[];
 }

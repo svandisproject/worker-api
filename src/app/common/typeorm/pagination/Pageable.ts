@@ -5,6 +5,7 @@ export class Pageable<T> {
 }
 
 export interface PageRequest {
-    page: number;
-    size: number;
+    page?: number;
+    size?: number;
+    filter?: string;
 }

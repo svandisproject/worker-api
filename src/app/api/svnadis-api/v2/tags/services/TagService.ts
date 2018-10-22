@@ -17,9 +17,13 @@ export class TagService {
         pageRequest = _.merge(PageableFactory.getDefaultPageRequest(), pageRequest);
         const q = this.tagRepo
             .createQueryBuilder('t')
-            .select()
             .skip(pageRequest.page * pageRequest.size)
             .take(pageRequest.size);
+
+        if (pageRequest.filter) {
+            const queryString = FilterStringToQueryStringConverter.convert(pageRequest.filter);
+            q.where(queryString);
+        }
 
         return await PageableFactory.build(q.getMany(), pageRequest, q.getCount());
     }
