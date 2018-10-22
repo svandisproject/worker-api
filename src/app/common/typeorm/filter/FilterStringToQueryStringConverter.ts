@@ -2,11 +2,12 @@ import {FilterOption} from "./FilterOption";
 import * as _ from "lodash";
 
 export class FilterStringToQueryStringConverter {
-    public static convert(filterString: string): string {
+    public static convert(filterString: string, queryBuilderPrefix: string | ''): string {
         const filterOptions = this.decode(filterString);
 
         const operationsMap = {
             eq: '=',
+            ne: '<>',
             gt: '>',
             lt: '<',
             lk: 'LIKE',
@@ -15,11 +16,13 @@ export class FilterStringToQueryStringConverter {
 
         const queryOptions = filterOptions.map((option) => {
             let str = `${option.property} ${operationsMap[option.type]} `;
-            if (_.isString(option.value)) {
-                str += `'${option.value}'`;
-            } else {
-                str += _.toString(option.value);
+            
+            if (!_.isEmpty(queryBuilderPrefix)) {
+                str = `${queryBuilderPrefix}.${str}`;
             }
+
+            str += this.formatValue(option.value);
+
             return str;
         });
 
@@ -28,5 +31,13 @@ export class FilterStringToQueryStringConverter {
 
     private static decode(filterString: string): FilterOption[] {
         return JSON.parse(Buffer.from(filterString, 'base64').toString());
+    }
+
+    private static formatValue(value: any) {
+        if (_.isString(value)) {
+            return `'${value}'`;
+        } else {
+            return _.toString(value);
+        }
     }
 }

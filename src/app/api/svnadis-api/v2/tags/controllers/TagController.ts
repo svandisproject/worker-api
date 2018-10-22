@@ -14,8 +14,8 @@ export class TagController {
     @ApiResponse({status: 200, type: TagEntity, isArray: true, description: 'Returns all Tags'})
     @Get()
     @UseGuards(AuthGuard('bearer'))
-    public findAll(@Query() params: PageRequest): Promise<Pageable<TagEntity>> {
-        return this.tagService.findAll(params);
+    public findAll(@Query() query: PageRequest): Promise<Pageable<TagEntity>> {
+        return this.tagService.findAll(query);
     }
 
     @ApiResponse({status: 200, type: TagEntity, isArray: true, description: 'Filter Tags'})

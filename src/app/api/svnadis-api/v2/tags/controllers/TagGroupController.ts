@@ -3,6 +3,7 @@ import {TagGroupService} from "../services/TagGroupService";
 import {ApiResponse, ApiUseTags} from "@nestjs/swagger";
 import {AuthGuard} from "@nestjs/passport";
 import {TagGroupEntity} from "../entities/TagGroup.entity";
+import {Pageable, PageRequest} from "../../../../../common/typeorm/pagination/Pageable";
 
 @ApiUseTags('tag-group')
 @Controller('tag-group')
@@ -13,8 +14,8 @@ export class TagGroupController {
     @ApiResponse({status: 200, type: TagGroupEntity, isArray: true, description: 'Returns all Tag groups'})
     @Get()
     @UseGuards(AuthGuard('bearer'))
-    public findAll(): Promise<TagGroupEntity[]> {
-        return this.tagGroupService.findAll();
+    public findAll(@Query() query: PageRequest): Promise<Pageable<TagGroupEntity>> {
+        return this.tagGroupService.findAll(query);
     }
 
     @ApiResponse({status: 200, type: TagGroupEntity, description: 'Returns Tag Group'})
@@ -40,12 +41,5 @@ export class TagGroupController {
     @UseGuards(AuthGuard('bearer'))
     public create(@Body() group: TagGroupEntity): Promise<TagGroupEntity> {
         return this.tagGroupService.create(group);
-    }
-
-    @ApiResponse({status: 200, type: TagGroupEntity, isArray: true, description: 'Filter Tags'})
-    @Get('/filter')
-    @UseGuards(AuthGuard('bearer'))
-    public filter(@Query('filter') filterString: string): Promise<TagGroupEntity[]> {
-        return this.tagGroupService.filter(filterString);
     }
 }
