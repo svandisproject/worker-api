@@ -14,6 +14,6 @@ export class TagEntity implements Tag {
     title: string;
 
     @JoinColumn({name: 'group_id', referencedColumnName: 'id'})
-    @ManyToOne((type) => TagGroupEntity, (tagGroup) => tagGroup.tags)
+    @ManyToOne((type) => TagGroupEntity, (tagGroup) => tagGroup.tags, { onDelete: 'CASCADE'})
     group: TagGroupEntity;
 }

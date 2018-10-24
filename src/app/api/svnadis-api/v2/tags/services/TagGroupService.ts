@@ -29,8 +29,10 @@ export class TagGroupService {
     }
 
     async create(tagGroup: TagGroupEntity): Promise<TagGroupEntity> {
-        let count = await this.tagGroupRepo.count();
-        tagGroup.id = count++;
+        const result = await this.tagGroupRepo.query('SELECT MAX(id) FROM tag_group');
+        const maxId = result[0].max;
+        tagGroup.id = maxId + 1;
+
         return await this.tagGroupRepo.save(tagGroup);
     }
 
