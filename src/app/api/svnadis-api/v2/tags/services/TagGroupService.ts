@@ -34,15 +34,19 @@ export class TagGroupService {
         return await this.tagGroupRepo.save(tagGroup);
     }
 
-    async delete(groupId: string): Promise<void> {
+    async delete(groupId: number): Promise<void> {
         await this.tagGroupRepo.delete(groupId);
     }
 
-    async findOne(groupId: string): Promise<TagGroupEntity> {
-        return await this.tagGroupRepo.findOne(groupId);
+    async findOne(groupId: number): Promise<TagGroupEntity> {
+        return await this.tagGroupRepo.findOne(groupId, { relations: ['tags'] });
     }
 
-    async findOneByTitle(groupTitle: string): Promise<TagGroupEntity> {
+    async findOneByTitle(groupTitle: number): Promise<TagGroupEntity> {
         return await this.tagGroupRepo.findOne({where: {title: groupTitle}});
+    }
+
+    async update(groupData: TagGroupEntity): Promise<TagGroupEntity> {
+        return await this.tagGroupRepo.save(groupData);
     }
 }
