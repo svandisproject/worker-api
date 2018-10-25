@@ -21,11 +21,7 @@ export class TagGroupController {
 
     @ApiResponse({status: 200, type: TagGroupEntity, description: 'Returns Tag Group'})
     @Get(':id')
-    public findOne(@Param('id') id: number, @Query() query): Promise<TagGroupEntity> {
-        if (query.title) {
-            // TODO: Implement proper filters
-            return this.tagGroupService.findOneByTitle(query.title);
-        }
+    public findOne(@Param('id') id: number): Promise<TagGroupEntity> {
         return this.tagGroupService.findOne(id);
     }
 
@@ -37,8 +33,9 @@ export class TagGroupController {
 
     @ApiResponse({status: 200, type: TagGroupEntity, description: 'New Tag Group'})
     @Post()
-    public create(@Body() group: TagGroupEntity): Promise<TagGroupEntity> {
-        return this.tagGroupService.create(group);
+    async create(@Body() newGroup: TagGroupEntity): Promise<TagGroupEntity> {
+        const createdGroup = await this.tagGroupService.create(newGroup);
+        return this.tagGroupService.findOne(createdGroup.id);
     }
 
     @ApiResponse({status: 200, type: TagGroupEntity, isArray: true, description: 'Returns all Tag groups'})

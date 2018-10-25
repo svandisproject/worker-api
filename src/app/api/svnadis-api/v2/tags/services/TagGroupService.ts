@@ -44,10 +44,6 @@ export class TagGroupService {
         return await this.tagGroupRepo.findOne(groupId, { relations: ['tags'] });
     }
 
-    async findOneByTitle(groupTitle: number): Promise<TagGroupEntity> {
-        return await this.tagGroupRepo.findOne({where: {title: groupTitle}});
-    }
-
     async update(groupData: TagGroupEntity): Promise<TagGroupEntity> {
         return await this.tagGroupRepo.save(groupData);
     }
