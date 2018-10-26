@@ -17,6 +17,7 @@ export class TagService {
         pageRequest = _.merge(PageableFactory.getDefaultPageRequest(), pageRequest);
         const q = this.tagRepo
             .createQueryBuilder('t')
+            .leftJoinAndSelect('t.group', 'group')
             .skip(pageRequest.page * pageRequest.size)
             .take(pageRequest.size);
 
